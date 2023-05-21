@@ -1,9 +1,24 @@
 import securityExtras from "../../fake-data/security-extras.json";
 import comfortExtras from "../../fake-data/comfort-extras.json";
 import otherExtras from "../../fake-data/other-extras.json";
-import carBrands from "../../fake-data/brands.json";
+import { getBrands } from "../../api.js";
+import { useEffect, useState } from "react";
 
 function Publish() {
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    getBrands()
+      .then((response) => {
+        setBrands(response.data);
+      })
+      .catch((error) =>
+        console.log(
+          `Something went wrong, please send this to an administrator: "${error.message}"`
+        )
+      );
+  }, []);
+
   return (
     <div className="container">
       <main className="mb-5">
@@ -22,10 +37,10 @@ function Publish() {
                   </label>
                   <select className="form-select" id="brand" required="">
                     <option value="">Всички</option>
-                    {carBrands.map((brand, index) => {
+                    {brands.map((brand) => {
                       return (
-                        <option key={index} value={brand}>
-                          {brand}
+                        <option key={brand.id} value={brand.id}>
+                          {brand.name}
                         </option>
                       );
                     })}
