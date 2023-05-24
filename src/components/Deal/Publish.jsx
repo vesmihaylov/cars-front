@@ -1,11 +1,12 @@
 import securityExtras from "../../fake-data/security-extras.json";
 import comfortExtras from "../../fake-data/comfort-extras.json";
 import otherExtras from "../../fake-data/other-extras.json";
-import { getBrands } from "../../api.js";
+import { getBrands, getCities } from "../../api.js";
 import { useEffect, useState } from "react";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     getBrands()
@@ -18,6 +19,19 @@ function Publish() {
         )
       );
   }, []);
+
+  useEffect(() => {
+    getCities()
+        .then((response) => {
+          setCities(response.data);
+        })
+        .catch((error) =>
+            console.log(
+                `Something went wrong, please send this to an administrator: "${error.message}"`
+            )
+        );
+  }, []);
+
 
   return (
     <div className="container">
@@ -36,7 +50,7 @@ function Publish() {
                     Марка
                   </label>
                   <select className="form-select" id="brand" required="">
-                    <option value="">Всички</option>
+                    <option value="all">Всички</option>
                     {brands.map((brand) => {
                       return (
                         <option key={brand.id} value={brand.id}>
@@ -103,8 +117,14 @@ function Publish() {
                     Град
                   </label>
                   <select className="form-select" id="city" required="">
-                    <option value="">Избери...</option>
-                    <option>Айтос</option>
+                    <option value="all">Всички</option>
+                    {cities.map((city) => {
+                      return (
+                          <option key={city.id} value={city.id}>
+                            {city.name}
+                          </option>
+                      );
+                    })}
                   </select>
                   <div className="invalid-feedback">Моля, изберете град.</div>
                 </div>

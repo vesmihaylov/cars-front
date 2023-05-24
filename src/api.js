@@ -10,4 +10,12 @@ const getBrands = async (term) => {
   });
 };
 
-export { getBrands };
+const getCities = async (term) => {
+  return axios.get(`${apiBaseUrl}/cities`, {
+    headers: {
+      Accept: "application/json",
+    },
+  });
+};
+
+export { getBrands, getCities };
