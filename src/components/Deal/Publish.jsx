@@ -1,12 +1,14 @@
 import securityExtras from "../../fake-data/security-extras.json";
 import comfortExtras from "../../fake-data/comfort-extras.json";
 import otherExtras from "../../fake-data/other-extras.json";
-import { getBrands, getCities } from "../../api.js";
+import { getBrands, getCities, getModels } from "../../api.js";
 import { useEffect, useState } from "react";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
+  const [models, setModels] = useState([]);
   const [cities, setCities] = useState([]);
+  const [currentBrand, setCurrentBrand] = useState(null);
 
   useEffect(() => {
     getBrands()
@@ -22,16 +24,32 @@ function Publish() {
 
   useEffect(() => {
     getCities()
-        .then((response) => {
-          setCities(response.data);
-        })
-        .catch((error) =>
-            console.log(
-                `Something went wrong, please send this to an administrator: "${error.message}"`
-            )
-        );
+      .then((response) => {
+        setCities(response.data);
+      })
+      .catch((error) =>
+        console.log(
+          `Something went wrong, please send this to an administrator: "${error.message}"`
+        )
+      );
   }, []);
 
+  function onBrandChange(event) {
+    populateModelDropdown(event.target.value);
+    setCurrentBrand(event.target.value);
+  }
+
+  function populateModelDropdown(brandId) {
+    getModels(brandId)
+      .then((response) => {
+        setModels(response.data);
+      })
+      .catch((error) =>
+        console.log(
+          `Something went wrong, please send this to an administrator: "${error.message}"`
+        )
+      );
+  }
 
   return (
     <div className="container">
@@ -49,7 +67,12 @@ function Publish() {
                   <label htmlFor="brand" className="form-label">
                     Марка
                   </label>
-                  <select className="form-select" id="brand" required="">
+                  <select
+                    onChange={onBrandChange}
+                    className="form-select"
+                    id="brand"
+                    required=""
+                  >
                     <option value="all">Всички</option>
                     {brands.map((brand) => {
                       return (
@@ -68,16 +91,18 @@ function Publish() {
                   <label htmlFor="lastName" className="form-label">
                     Модел
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="model"
-                    placeholder=""
-                    value=""
-                    required=""
-                  />
+                  <select className="form-select" id="brand" required="">
+                    <option value="all">Всички</option>
+                    {models.map((model) => {
+                      return (
+                        <option key={model.id} value={model.id}>
+                          {model.name}
+                        </option>
+                      );
+                    })}
+                  </select>
                   <div className="invalid-feedback">
-                    Valid last name is required.
+                    Моля, изберете модел на дадената марка.
                   </div>
                 </div>
 
@@ -120,9 +145,9 @@ function Publish() {
                     <option value="all">Всички</option>
                     {cities.map((city) => {
                       return (
-                          <option key={city.id} value={city.id}>
-                            {city.name}
-                          </option>
+                        <option key={city.id} value={city.id}>
+                          {city.name}
+                        </option>
                       );
                     })}
                   </select>
