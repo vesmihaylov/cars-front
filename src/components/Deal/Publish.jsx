@@ -1,6 +1,3 @@
-import securityExtras from "../../fake-data/security-extras.json";
-import comfortExtras from "../../fake-data/comfort-extras.json";
-import otherExtras from "../../fake-data/other-extras.json";
 import { getBrands, getCities, getModels, getFeatures } from "../../api.js";
 import { useEffect, useState } from "react";
 
