@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const apiBaseUrl = import.meta.env.VITE_SERVER_BASE_URL;
+const entrypoint = import.meta.env.VITE_API_ENTRYPOINT;
 
 const getBrands = async () => {
-  return axios.get(`${apiBaseUrl}/brands`, {
+  return axios.get(`${entrypoint}/brands`, {
     headers: {
       Accept: "application/json",
     },
@@ -11,7 +11,7 @@ const getBrands = async () => {
 };
 
 const getCities = async () => {
-  return axios.get(`${apiBaseUrl}/cities`, {
+  return axios.get(`${entrypoint}/cities`, {
     headers: {
       Accept: "application/json",
     },
@@ -19,11 +19,19 @@ const getCities = async () => {
 };
 
 const getModels = async (brandId) => {
-  return axios.get(`${apiBaseUrl}/models?brand=${brandId}`, {
+  return axios.get(`${entrypoint}/models?brand=${brandId}`, {
     headers: {
       Accept: "application/json",
     },
   });
 };
 
-export { getBrands, getCities, getModels };
+const getFeatures = async () => {
+  return axios.get(`${entrypoint}/features`, {
+    headers: {
+      Accept: "application/json",
+    },
+  });
+};
+
+export { getBrands, getCities, getModels, getFeatures };

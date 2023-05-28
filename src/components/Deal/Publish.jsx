@@ -1,13 +1,14 @@
 import securityExtras from "../../fake-data/security-extras.json";
 import comfortExtras from "../../fake-data/comfort-extras.json";
 import otherExtras from "../../fake-data/other-extras.json";
-import { getBrands, getCities, getModels } from "../../api.js";
+import { getBrands, getCities, getModels, getFeatures } from "../../api.js";
 import { useEffect, useState } from "react";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
   const [cities, setCities] = useState([]);
+  const [features, setFeatures] = useState([]);
   const [currentBrand, setCurrentBrand] = useState(null);
 
   useEffect(() => {
@@ -26,6 +27,18 @@ function Publish() {
     getCities()
       .then((response) => {
         setCities(response.data);
+      })
+      .catch((error) =>
+        console.log(
+          `Something went wrong, please send this to an administrator: "${error.message}"`
+        )
+      );
+  }, []);
+
+  useEffect(() => {
+    getFeatures()
+      .then((response) => {
+        setFeatures(response.data);
       })
       .catch((error) =>
         console.log(
@@ -316,56 +329,71 @@ function Publish() {
               <div className="row">
                 <div className="col-sm-4">
                   <h6 className="mb-3">Сигурност</h6>
-                  {securityExtras.map((extra, index) => {
-                    return (
-                      <div key={index} className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id={extra}
-                        />
-                        <label className="form-check-label" htmlFor={extra}>
-                          {extra}
-                        </label>
-                      </div>
-                    );
-                  })}
+                  {features
+                    .filter((feature) => feature.type === "SECURITY")
+                    .map((feature) => {
+                      return (
+                        <div key={feature.id} className="form-check">
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id={feature.id}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={feature.id}
+                          >
+                            {feature.name}
+                          </label>
+                        </div>
+                      );
+                    })}
                 </div>
 
                 <div className="col-sm-4">
                   <h6 className="mb-3 mt-3">Комфорт</h6>
-                  {comfortExtras.map((extra, index) => {
-                    return (
-                      <div key={index} className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id={extra}
-                        />
-                        <label className="form-check-label" htmlFor={extra}>
-                          {extra}
-                        </label>
-                      </div>
-                    );
-                  })}
+                  {features
+                    .filter((feature) => feature.type === "COMFORT")
+                    .map((feature) => {
+                      return (
+                        <div key={feature.id} className="form-check">
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id={feature.id}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={feature.id}
+                          >
+                            {feature.name}
+                          </label>
+                        </div>
+                      );
+                    })}
                 </div>
 
                 <div className="col-sm-4">
                   <h6 className="mb-3 mt-3">Други</h6>
-                  {otherExtras.map((extra, index) => {
-                    return (
-                      <div key={index} className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id={extra}
-                        />
-                        <label className="form-check-label" htmlFor={extra}>
-                          {extra}
-                        </label>
-                      </div>
-                    );
-                  })}
+                  {features
+                    .filter((feature) => feature.type === "OTHER")
+                    .map((feature) => {
+                      return (
+                        <div key={feature.id} className="form-check">
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id={feature.id}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={feature.id}
+                          >
+                            {feature.name}
+                          </label>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
 
