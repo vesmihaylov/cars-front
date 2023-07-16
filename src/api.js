@@ -34,4 +34,11 @@ const getFeatures = async () => {
   });
 };
 
-export { getBrands, getCities, getModels, getFeatures };
+const publishDeal = async (data) => {
+  console.log(data);
+  await axios.post(`${entrypoint}/deals`, {
+    data,
+  });
+};
+
+export { getBrands, getCities, getModels, getFeatures, publishDeal };

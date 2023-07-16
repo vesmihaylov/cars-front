@@ -1,4 +1,15 @@
-import { getBrands, getCities, getModels, getFeatures } from "../../api.js";
+import {
+  getBrands,
+  getCities,
+  getModels,
+  getFeatures,
+  publishDeal,
+} from "../../api.js";
+import conditionTypes from "../../static_data/condition_types.json";
+import fuelTypes from "../../static_data/fuel_types.json";
+import transmissionTypes from "../../static_data/transmission_types.json";
+import wheelTypes from "../../static_data/wheel_types.json";
+import coupeTypes from "../../static_data/coupe_types.json";
 import { useEffect, useState } from "react";
 
 function Publish() {
@@ -6,7 +17,24 @@ function Publish() {
   const [models, setModels] = useState([]);
   const [cities, setCities] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [currentBrand, setCurrentBrand] = useState(null);
+  const [dealFeatures, setDealFeatures] = useState([]);
+  const [form, setForm] = useState({
+    brandId: "",
+    modelId: "",
+    additionalTitle: "",
+    coupeType: "SEDAN",
+    city: "",
+    price: 0,
+    condition: "USED",
+    wheelType: "",
+    transmissionType: "",
+    fuelType: "",
+    horsePower: 0,
+    year: new Date().getFullYear(),
+    features: dealFeatures,
+    description: "",
+    mileage: 0,
+  });
 
   useEffect(() => {
     getBrands()
@@ -18,9 +46,7 @@ function Publish() {
           `Something went wrong, please send this to an administrator: "${error.message}"`
         )
       );
-  }, []);
 
-  useEffect(() => {
     getCities()
       .then((response) => {
         setCities(response.data);
@@ -30,9 +56,7 @@ function Publish() {
           `Something went wrong, please send this to an administrator: "${error.message}"`
         )
       );
-  }, []);
 
-  useEffect(() => {
     getFeatures()
       .then((response) => {
         setFeatures(response.data);
@@ -46,7 +70,6 @@ function Publish() {
 
   function onBrandChange(event) {
     populateModelDropdown(event.target.value);
-    setCurrentBrand(event.target.value);
   }
 
   function populateModelDropdown(brandId) {
@@ -61,6 +84,50 @@ function Publish() {
       );
   }
 
+  const handleChange = (event) => {
+    setForm({
+      ...form,
+      [event.target.id]: event.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let data = {
+      brandId: e.target.elements.brand.value,
+      modelId: e.target.elements.model.value,
+      additionalTitle: e.target.elements.additionalTitle.value,
+      coupeType: e.target.elements.coupeType.value,
+      cityId: e.target.elements.city.value,
+      price: parseInt(e.target.elements.price.value),
+      conditionType: e.target.elements.condition.value,
+      wheelType: e.target.elements.wheelType.value,
+      fuelType: e.target.elements.fuelType.value,
+      transmissionType: e.target.elements.transmissionType.value,
+      horsePower: parseInt(e.target.elements.horsePower.value),
+      year: parseInt(e.target.elements.year.value),
+      features: dealFeatures,
+      description: e.target.elements.description.value,
+      mileage: parseInt(e.target.elements.mileage.value),
+    };
+
+    publishDeal(data)
+      .then((response) => {})
+      .catch((error) =>
+        console.log(
+          `Something went wrong, please send this to an administrator: "${error.message}"`
+        )
+      );
+  };
+
+  const handleFeatureCheck = (e) => {
+    let updatedList = [...dealFeatures];
+    e.target.checked
+      ? (updatedList = [...dealFeatures, e.target.value])
+      : updatedList.splice(dealFeatures.indexOf(e.target.value), 1);
+    setDealFeatures(updatedList);
+  };
+
   return (
     <div className="container">
       <main className="mb-5">
@@ -71,7 +138,7 @@ function Publish() {
         <div className="row g-5">
           <div className="col-md-7 col-lg-12">
             <h4 className="mb-3">Основна информация</h4>
-            <form className="needs-validation" noValidate="">
+            <form className="needs-validation" onSubmit={handleSubmit}>
               <div className="row g-3">
                 <div className="col-sm-6">
                   <label htmlFor="brand" className="form-label">
@@ -83,7 +150,6 @@ function Publish() {
                     id="brand"
                     required=""
                   >
-                    <option value="all">Всички</option>
                     {brands.map((brand) => {
                       return (
                         <option key={brand.id} value={brand.id}>
@@ -101,8 +167,12 @@ function Publish() {
                   <label htmlFor="lastName" className="form-label">
                     Модел
                   </label>
-                  <select className="form-select" id="brand" required="">
-                    <option value="all">Всички</option>
+                  <select
+                    onChange={handleChange}
+                    className="form-select"
+                    id="model"
+                    required=""
+                  >
                     {models.map((model) => {
                       return (
                         <option key={model.id} value={model.id}>
@@ -117,33 +187,38 @@ function Publish() {
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="username" className="form-label">
+                  <label htmlFor="additionalTitle" className="form-label">
                     Допълнително описание (<i>...спорт пакет, фейслифт...</i>)
                   </label>
                   <div className="input-group has-validation">
                     <input
+                      onChange={handleChange}
+                      value={form.additionalTitle}
                       type="text"
                       className="form-control"
-                      id="extra-title"
+                      id="additionalTitle"
                     />
                   </div>
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="coupe_type" className="form-label">
+                  <label htmlFor="coupeType" className="form-label">
                     Вид Купе
                   </label>
-                  <select className="form-select" id="coupe_type" required="">
-                    <option value="">Всички</option>
-                    <option>Седан</option>
-                    <option>Хечбек</option>
-                    <option>Комби</option>
-                    <option>Купе</option>
-                    <option>Кабрио</option>
-                    <option>Джип</option>
-                    <option>Пикап</option>
-                    <option>Ван</option>
-                    <option>Катафалка</option>
+                  <select
+                    onChange={handleChange}
+                    value={form.coupeType}
+                    className="form-select"
+                    id="coupeType"
+                    required=""
+                  >
+                    {Object.entries(coupeTypes).map(([key, coupeType]) => {
+                      return (
+                        <option key={key} value={coupeType.key}>
+                          {coupeType.value}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -151,8 +226,13 @@ function Publish() {
                   <label htmlFor="city" className="form-label">
                     Град
                   </label>
-                  <select className="form-select" id="city" required="">
-                    <option value="all">Всички</option>
+                  <select
+                    onChange={handleChange}
+                    value={form.city}
+                    className="form-select"
+                    id="city"
+                    required=""
+                  >
                     {cities.map((city) => {
                       return (
                         <option key={city.id} value={city.id}>
@@ -169,7 +249,13 @@ function Publish() {
                     Цена
                   </label>
                   <div className="input-group has-validation">
-                    <input type="number" className="form-control" id="price" />
+                    <input
+                      onChange={handleChange}
+                      value={form.price}
+                      type="number"
+                      className="form-control"
+                      id="price"
+                    />
                   </div>
                   <div className="invalid-feedback">Моля, въведете цена.</div>
                 </div>
@@ -180,136 +266,147 @@ function Publish() {
               <h4 className="mb-3">Допълнителна информация</h4>
 
               <div className="row g-3">
-                <div className="col-sm-2">
+                <div className="col-sm-3">
                   <h5 className="mb-3">Състояние</h5>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="all"
-                      checked
-                    />
-                    <label className="form-check-label" htmlFor="all">
-                      Всички
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="new"
-                    />
-                    <label className="form-check-label" htmlFor="new">
-                      Ново
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="used"
-                    />
-                    <label className="form-check-label" htmlFor="used">
-                      Употребявано
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="damaged"
-                    />
-                    <label className="form-check-label" htmlFor="damaged">
-                      Ударено
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="broken"
-                    />
-                    <label className="form-check-label" htmlFor="broken">
-                      Повредено
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="parts"
-                    />
-                    <label className="form-check-label" htmlFor="parts">
-                      За части
-                    </label>
-                  </div>
+                  {Object.entries(conditionTypes).map(
+                    ([key, conditionType]) => {
+                      return (
+                        <div key={key} className="form-check">
+                          <input
+                            onChange={handleChange}
+                            defaultChecked={conditionType.key === "USED"}
+                            name="condition"
+                            id={conditionType.id}
+                            value={conditionType.key}
+                            type="radio"
+                            className="form-check-input"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={conditionType.id}
+                          >
+                            {conditionType.value}
+                          </label>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
                 <div className="col-sm-3">
                   <h5 className="mb-3">Разположение на волан</h5>
-                  <div className="form-check">
-                    <input
-                      id="left_wheel"
-                      name="paymentMethod"
-                      type="radio"
-                      className="form-check-input"
-                      checked
-                    />
-                    <label className="form-check-label" htmlFor="left_wheel">
-                      Ляво
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      id="right_wheel"
-                      name="paymentMethod"
-                      type="radio"
-                      className="form-check-input"
-                    />
-                    <label className="form-check-label" htmlFor="right_wheel">
-                      Дясно
-                    </label>
-                  </div>
+                  {Object.entries(wheelTypes).map(([key, wheelType]) => {
+                    return (
+                      <div key={key} className="form-check">
+                        <input
+                          onChange={handleChange}
+                          defaultChecked={wheelType.key === "LEFT"}
+                          name="wheelType"
+                          id={wheelType.id}
+                          value={wheelType.key}
+                          type="radio"
+                          className="form-check-input"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor={wheelType.id}
+                        >
+                          {wheelType.value}
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="col-sm-2">
+                <div className="col-sm-3">
                   <h5 className="mb-3">Скорости</h5>
-                  <div className="form-check">
-                    <input
-                      id="manual"
-                      name="manual"
-                      type="radio"
-                      className="form-check-input"
-                      checked
-                    />
-                    <label className="form-check-label" htmlFor="manual">
-                      Ръчни
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      id="automatic"
-                      name="automatic"
-                      type="radio"
-                      className="form-check-input"
-                    />
-                    <label className="form-check-label" htmlFor="automatic">
-                      Автоматични
-                    </label>
-                  </div>
+                  {Object.entries(transmissionTypes).map(
+                    ([key, transmissionType]) => {
+                      return (
+                        <div key={key} className="form-check">
+                          <input
+                            onChange={handleChange}
+                            defaultChecked={transmissionType.key === "MANUAL"}
+                            name="transmissionType"
+                            id={transmissionType.id}
+                            value={transmissionType.key}
+                            type="radio"
+                            className="form-check-input"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={transmissionType.id}
+                          >
+                            {transmissionType.value}
+                          </label>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
-                <div className="col-sm-2">
-                  <label htmlFor="power" className="form-label">
+                <div className="col-sm-3">
+                  <h5 className="mb-3">Тип двигател</h5>
+                  {Object.entries(fuelTypes).map(([key, fuelType]) => {
+                    return (
+                      <div key={key} className="form-check">
+                        <input
+                          onChange={handleChange}
+                          defaultChecked={fuelType.key === "PETROL"}
+                          name="fuelType"
+                          id={fuelType.id}
+                          value={fuelType.key}
+                          type="radio"
+                          className="form-check-input"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor={fuelType.id}
+                        >
+                          {fuelType.value}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <hr className="my-4" />
+
+              <div className="row g-4">
+                <div className="col-sm-3">
+                  <label htmlFor="horsePower" className="form-label">
                     Мощност (к.с.)
                   </label>
                   <div className="input-group has-validation">
-                    <input type="number" className="form-control" id="power" />
+                    <input
+                      onChange={handleChange}
+                      value={form.horsePower}
+                      type="number"
+                      className="form-control"
+                      id="horsePower"
+                    />
                   </div>
                 </div>
-                <div className="col-sm-2">
+                <div className="col-sm-4">
+                  <label htmlFor="mileage" className="form-label">
+                    Пробег (км.)
+                  </label>
+                  <div className="input-group has-validation">
+                    <input
+                      onChange={handleChange}
+                      value={form.mileage}
+                      type="number"
+                      className="form-control"
+                      id="mileage"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-4">
                   <label htmlFor="year" className="form-label">
                     Година на производство
                   </label>
                   <div className="input-group has-validation">
                     <input
+                      onChange={handleChange}
+                      value={form.year}
                       min="1886"
                       max={new Date().getFullYear() + 1}
                       type="number"
@@ -332,6 +429,9 @@ function Publish() {
                       return (
                         <div key={feature.id} className="form-check">
                           <input
+                            onClick={handleFeatureCheck}
+                            value={feature.id}
+                            name="securityFeatures"
                             type="checkbox"
                             className="form-check-input"
                             id={feature.id}
@@ -355,6 +455,9 @@ function Publish() {
                       return (
                         <div key={feature.id} className="form-check">
                           <input
+                            onChange={handleFeatureCheck}
+                            value={feature.id}
+                            name="comfortFeatures"
                             type="checkbox"
                             className="form-check-input"
                             id={feature.id}
@@ -378,6 +481,9 @@ function Publish() {
                       return (
                         <div key={feature.id} className="form-check">
                           <input
+                            onChange={handleFeatureCheck}
+                            value={feature.id}
+                            name="otherFeatures"
                             type="checkbox"
                             className="form-check-input"
                             id={feature.id}
@@ -391,6 +497,24 @@ function Publish() {
                         </div>
                       );
                     })}
+                </div>
+              </div>
+
+              <hr className="my-4" />
+              <div className="row g-3">
+                <div className="col-sm-12">
+                  <label htmlFor="year" className="form-label">
+                    Допълнителна информация
+                  </label>
+                  <div className="input-group has-validation">
+                    <textarea
+                      onChange={handleChange}
+                      value={form.description}
+                      className="form-control"
+                      id="description"
+                      rows="6"
+                    />
+                  </div>
                 </div>
               </div>
 

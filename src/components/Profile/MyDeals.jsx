@@ -1,5 +1,5 @@
 import Navigation from "./Navigation.jsx";
-import deals from "../../fake-data/deals.json";
+import deals from "../../fake_data/deals.json";
 import { Link } from "react-router-dom";
 
 function MyDeals() {

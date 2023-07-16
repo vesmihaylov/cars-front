@@ -1,0 +1,32 @@
+[
+  {
+    "key": "PETROL",
+    "value": "Бензин",
+    "id": "petrol"
+  },
+  {
+    "key": "DIESEL",
+    "value": "Дизел",
+    "id": "diesel"
+  },
+  {
+    "key": "GAS_AND_PETROL",
+    "value": "Газ/Бензин",
+    "id": "gas_and_petrol"
+  },
+  {
+    "key": "METHANE_AND_PETROL",
+    "value": "Метан/Бензин",
+    "id": "methane_and_petrol"
+  },
+  {
+    "key": "HYBRID",
+    "value": "Хибрид",
+    "id": "hybrid"
+  },
+  {
+    "key": "ELECTRIC",
+    "value": "Електричество",
+    "id": "electric"
+  }
+]

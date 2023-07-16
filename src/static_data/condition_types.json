@@ -1,0 +1,27 @@
+[
+  {
+    "key": "NEW",
+    "value": "Нов",
+    "id": "new"
+  },
+  {
+    "key": "USED",
+    "value": "Употребявано",
+    "id": "used"
+  },
+  {
+    "key": "CRASHED",
+    "value": "Ударено",
+    "id": "crashed"
+  },
+  {
+    "key": "BROKEN",
+    "value": "Повредено",
+    "id": "broken"
+  },
+  {
+    "key": "PARTS",
+    "value": "За части",
+    "id": "parts"
+  }
+]

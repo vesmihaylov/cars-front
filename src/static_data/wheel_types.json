@@ -1,0 +1,12 @@
+[
+  {
+    "key": "LEFT",
+    "value": "Ляво",
+    "id": "leftWheel"
+  },
+  {
+    "key": "RIGHT",
+    "value": "Дясно",
+    "id": "rightWheel"
+  }
+]

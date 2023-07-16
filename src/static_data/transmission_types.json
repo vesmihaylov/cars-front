@@ -1,0 +1,12 @@
+[
+  {
+    "key": "MANUAL",
+    "value": "Ръчни",
+    "id": "manual"
+  },
+  {
+    "key": "AUTOMATIC",
+    "value": "Автоматични",
+    "id": "automatic"
+  }
+]

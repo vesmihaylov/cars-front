@@ -1,4 +1,4 @@
-import deals from "../../fake-data/deals.json";
+import deals from "../../fake_data/deals.json";
 import { useParams } from "react-router-dom";
 import {
   CalendarDateFill,

@@ -1,5 +1,5 @@
 import Deal from "./Deal.jsx";
-import deals from "../../fake-data/deals.json";
+import deals from "../../fake_data/deals.json";
 
 function List() {
   let newDeals = deals.map((deal) => {
