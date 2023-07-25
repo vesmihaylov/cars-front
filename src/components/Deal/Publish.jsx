@@ -150,7 +150,7 @@ function Publish() {
 
     setForm({
       ...form,
-      [event.target.id]: (event.target.type === 'number') ? parseInt(event.target.value) : event.target.value
+      [event.target.id]: (event.target.type === 'number') ? parseInt(event.target.value) || "" : event.target.value
     });
   };
 
