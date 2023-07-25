@@ -18,23 +18,82 @@ function Publish() {
   const [cities, setCities] = useState([]);
   const [features, setFeatures] = useState([]);
   const [dealFeatures, setDealFeatures] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
   const [form, setForm] = useState({
     brandId: "",
     modelId: "",
     additionalTitle: "",
     coupeType: "SEDAN",
-    city: "",
+    cityId: "",
     price: 0,
-    condition: "USED",
-    wheelType: "",
-    transmissionType: "",
-    fuelType: "",
+    conditionType: "USED",
+    wheelType: "LEFT",
+    transmissionType: "MANUAL",
+    fuelType: "PETROL",
     horsePower: 0,
     year: new Date().getFullYear(),
     features: dealFeatures,
     description: "",
     mileage: 0,
   });
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!form.brandId) {
+      errors.brandId = "Моля, изберете марка.";
+    }
+
+    if (!form.modelId) {
+      errors.modelId = "Моля, изберете модел.";
+    }
+
+    if (!form.coupeType) {
+      errors.coupeType = "Моля, изберете вид купе.";
+    }
+
+    if (!form.cityId) {
+      errors.cityId = "Моля, изберете град.";
+    }
+
+    if (!form.price || form.price === 0) {
+      errors.price = "Моля, въведете валидна цена.";
+    }
+
+    if (!form.conditionType) {
+      errors.conditionType = "Моля, изберете състояние.";
+    }
+
+      if (!form.wheelType) {
+          errors.wheelType = "Моля, изберете разположение на волан.";
+      }
+
+      if (!form.transmissionType) {
+          errors.transmissionType = "Моля, изберете вид скоростна кутия.";
+      }
+
+      if (!form.fuelType) {
+          errors.fuelType = "Моля, изберете вид двигател.";
+      }
+
+      if (!form.horsePower || form.horsePower === 0 || form.horsePower < 5) {
+          errors.horsePower = "Моля, въведете валидна мощност на двигател.";
+      }
+
+      if (!form.mileage) {
+          errors.mileage = "Моля, въведете пробег.";
+      }
+
+      if (!form.year) {
+          errors.year = "Моля, въведете валидна година.";
+      }
+
+      if (!form.description) {
+          errors.description = "Моля, въведете допълнителна информация.";
+      }
+
+    return errors;
+  };
 
   useEffect(() => {
     getBrands()
@@ -85,39 +144,31 @@ function Publish() {
   }
 
   const handleChange = (event) => {
+    if (event.target.id === 'brandId') {
+      onBrandChange(event);
+    }
+
     setForm({
       ...form,
-      [event.target.id]: event.target.value,
+      [event.target.id]: (event.target.type === 'number') ? parseInt(event.target.value) : event.target.value
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data = {
-      brandId: e.target.elements.brand.value,
-      modelId: e.target.elements.model.value,
-      additionalTitle: e.target.elements.additionalTitle.value,
-      coupeType: e.target.elements.coupeType.value,
-      cityId: e.target.elements.city.value,
-      price: parseInt(e.target.elements.price.value),
-      conditionType: e.target.elements.condition.value,
-      wheelType: e.target.elements.wheelType.value,
-      fuelType: e.target.elements.fuelType.value,
-      transmissionType: e.target.elements.transmissionType.value,
-      horsePower: parseInt(e.target.elements.horsePower.value),
-      year: parseInt(e.target.elements.year.value),
-      features: dealFeatures,
-      description: e.target.elements.description.value,
-      mileage: parseInt(e.target.elements.mileage.value),
-    };
+    const errors = validateForm();
+    setFormErrors(errors);
 
-    publishDeal(data)
-      .then((response) => {})
-      .catch((error) =>
-        console.log(
-          `Something went wrong, please send this to an administrator: "${error.message}"`
-        )
-      );
+    if (Object.keys(errors).length === 0) {
+      publishDeal(form)
+          .then((response) => {
+          })
+          .catch((error) =>
+              console.log(
+                  `Something went wrong, please send this to an administrator: "${error.message}"`
+              )
+          );
+    }
   };
 
   const handleFeatureCheck = (e) => {
@@ -141,13 +192,14 @@ function Publish() {
             <form className="needs-validation" onSubmit={handleSubmit}>
               <div className="row g-3">
                 <div className="col-sm-6">
-                  <label htmlFor="brand" className="form-label">
+                  <label htmlFor="brandId" className="form-label">
                     Марка
                   </label>
                   <select
-                    onChange={onBrandChange}
-                    className="form-select"
-                    id="brand"
+                    onChange={handleChange}
+                    value={form.brandId}
+                    className={`form-select ${formErrors.brandId ? "is-invalid" : ""}`}
+                    id="brandId"
                     required=""
                   >
                     {brands.map((brand) => {
@@ -158,19 +210,20 @@ function Publish() {
                       );
                     })}
                   </select>
-                  <div className="invalid-feedback">
-                    Моля, изберете марка автомобил.
-                  </div>
+                  {formErrors.brandId && (
+                      <div className="invalid-feedback">{formErrors.brandId}</div>
+                  )}
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="lastName" className="form-label">
+                  <label htmlFor="modelId" className="form-label">
                     Модел
                   </label>
                   <select
                     onChange={handleChange}
-                    className="form-select"
-                    id="model"
+                    value={form.modelId}
+                    className={`form-select ${formErrors.modelId ? "is-invalid" : ""}`}
+                    id="modelId"
                     required=""
                   >
                     {models.map((model) => {
@@ -181,9 +234,9 @@ function Publish() {
                       );
                     })}
                   </select>
-                  <div className="invalid-feedback">
-                    Моля, изберете модел на дадената марка.
-                  </div>
+                  {formErrors.modelId && (
+                      <div className="invalid-feedback">{formErrors.modelId}</div>
+                  )}
                 </div>
 
                 <div className="col-sm-6">
@@ -208,7 +261,7 @@ function Publish() {
                   <select
                     onChange={handleChange}
                     value={form.coupeType}
-                    className="form-select"
+                    className={`form-select ${formErrors.coupeType ? "is-invalid" : ""}`}
                     id="coupeType"
                     required=""
                   >
@@ -220,17 +273,20 @@ function Publish() {
                       );
                     })}
                   </select>
+                    {formErrors.coupeType && (
+                        <div className="invalid-feedback">{formErrors.coupeType}</div>
+                    )}
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="city" className="form-label">
+                  <label htmlFor="cityId" className="form-label">
                     Град
                   </label>
                   <select
                     onChange={handleChange}
-                    value={form.city}
-                    className="form-select"
-                    id="city"
+                    value={form.cityId}
+                    className={`form-select ${formErrors.cityId ? "is-invalid" : ""}`}
+                    id="cityId"
                     required=""
                   >
                     {cities.map((city) => {
@@ -241,7 +297,9 @@ function Publish() {
                       );
                     })}
                   </select>
-                  <div className="invalid-feedback">Моля, изберете град.</div>
+                  {formErrors.cityId && (
+                      <div className="invalid-feedback">{formErrors.cityId}</div>
+                  )}
                 </div>
 
                 <div className="col-sm-6">
@@ -253,11 +311,13 @@ function Publish() {
                       onChange={handleChange}
                       value={form.price}
                       type="number"
-                      className="form-control"
+                      className={`form-control ${formErrors.price ? "is-invalid" : ""}`}
                       id="price"
                     />
+                    {formErrors.price && (
+                        <div className="invalid-feedback">{formErrors.price}</div>
+                    )}
                   </div>
-                  <div className="invalid-feedback">Моля, въведете цена.</div>
                 </div>
               </div>
 
@@ -276,7 +336,7 @@ function Publish() {
                             onChange={handleChange}
                             defaultChecked={conditionType.key === "USED"}
                             name="condition"
-                            id={conditionType.id}
+                            id="conditionType"
                             value={conditionType.key}
                             type="radio"
                             className="form-check-input"
@@ -301,7 +361,7 @@ function Publish() {
                           onChange={handleChange}
                           defaultChecked={wheelType.key === "LEFT"}
                           name="wheelType"
-                          id={wheelType.id}
+                          id="wheelType"
                           value={wheelType.key}
                           type="radio"
                           className="form-check-input"
@@ -326,7 +386,7 @@ function Publish() {
                             onChange={handleChange}
                             defaultChecked={transmissionType.key === "MANUAL"}
                             name="transmissionType"
-                            id={transmissionType.id}
+                            id="transmissionType"
                             value={transmissionType.key}
                             type="radio"
                             className="form-check-input"
@@ -351,14 +411,14 @@ function Publish() {
                           onChange={handleChange}
                           defaultChecked={fuelType.key === "PETROL"}
                           name="fuelType"
-                          id={fuelType.id}
+                          id="fuelType"
                           value={fuelType.key}
                           type="radio"
                           className="form-check-input"
                         />
                         <label
                           className="form-check-label"
-                          htmlFor={fuelType.id}
+                          htmlFor="fuelType"
                         >
                           {fuelType.value}
                         </label>
@@ -380,9 +440,12 @@ function Publish() {
                       onChange={handleChange}
                       value={form.horsePower}
                       type="number"
-                      className="form-control"
+                      className={`form-control ${formErrors.horsePower ? "is-invalid" : ""}`}
                       id="horsePower"
                     />
+                      {formErrors.horsePower && (
+                          <div className="invalid-feedback">{formErrors.horsePower}</div>
+                      )}
                   </div>
                 </div>
                 <div className="col-sm-4">
@@ -394,9 +457,12 @@ function Publish() {
                       onChange={handleChange}
                       value={form.mileage}
                       type="number"
-                      className="form-control"
+                      className={`form-control ${formErrors.mileage ? "is-invalid" : ""}`}
                       id="mileage"
                     />
+                      {formErrors.mileage && (
+                          <div className="invalid-feedback">{formErrors.mileage}</div>
+                      )}
                   </div>
                 </div>
                 <div className="col-sm-4">
@@ -410,9 +476,12 @@ function Publish() {
                       min="1886"
                       max={new Date().getFullYear() + 1}
                       type="number"
-                      className="form-control"
+                      className={`form-control ${formErrors.year ? "is-invalid" : ""}`}
                       id="year"
                     />
+                      {formErrors.year && (
+                          <div className="invalid-feedback">{formErrors.year}</div>
+                      )}
                   </div>
                 </div>
               </div>
@@ -503,17 +572,20 @@ function Publish() {
               <hr className="my-4" />
               <div className="row g-3">
                 <div className="col-sm-12">
-                  <label htmlFor="year" className="form-label">
+                  <label htmlFor="description" className="form-label">
                     Допълнителна информация
                   </label>
                   <div className="input-group has-validation">
                     <textarea
                       onChange={handleChange}
                       value={form.description}
-                      className="form-control"
+                      className={`form-control ${formErrors.description ? "is-invalid" : ""}`}
                       id="description"
                       rows="6"
                     />
+                      {formErrors.description && (
+                          <div className="invalid-feedback">{formErrors.description}</div>
+                      )}
                   </div>
                 </div>
               </div>
