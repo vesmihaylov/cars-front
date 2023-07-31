@@ -18,6 +18,7 @@ function Publish() {
   const [cities, setCities] = useState([]);
   const [features, setFeatures] = useState([]);
   const [dealFeatures, setDealFeatures] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [form, setForm] = useState({
     brandId: "",
@@ -64,33 +65,33 @@ function Publish() {
       errors.conditionType = "Моля, изберете състояние.";
     }
 
-      if (!form.wheelType) {
-          errors.wheelType = "Моля, изберете разположение на волан.";
-      }
+    if (!form.wheelType) {
+      errors.wheelType = "Моля, изберете разположение на волан.";
+    }
 
-      if (!form.transmissionType) {
-          errors.transmissionType = "Моля, изберете вид скоростна кутия.";
-      }
+    if (!form.transmissionType) {
+      errors.transmissionType = "Моля, изберете вид скоростна кутия.";
+    }
 
-      if (!form.fuelType) {
-          errors.fuelType = "Моля, изберете вид двигател.";
-      }
+    if (!form.fuelType) {
+      errors.fuelType = "Моля, изберете вид двигател.";
+    }
 
-      if (!form.horsePower || form.horsePower === 0 || form.horsePower < 5) {
-          errors.horsePower = "Моля, въведете валидна мощност на двигател.";
-      }
+    if (!form.horsePower || form.horsePower === 0 || form.horsePower < 5) {
+      errors.horsePower = "Моля, въведете валидна мощност на двигател.";
+    }
 
-      if (!form.mileage) {
-          errors.mileage = "Моля, въведете пробег.";
-      }
+    if (!form.mileage) {
+      errors.mileage = "Моля, въведете пробег.";
+    }
 
-      if (!form.year) {
-          errors.year = "Моля, въведете валидна година.";
-      }
+    if (!form.year) {
+      errors.year = "Моля, въведете валидна година.";
+    }
 
-      if (!form.description) {
-          errors.description = "Моля, въведете допълнителна информация.";
-      }
+    if (!form.description) {
+      errors.description = "Моля, въведете допълнителна информация.";
+    }
 
     return errors;
   };
@@ -99,6 +100,13 @@ function Publish() {
     getBrands()
       .then((response) => {
         setBrands(response.data);
+        if (response.data.length > 0) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            brandId: response.data[0].id,
+          }));
+          populateModelDropdown(response.data[0].id);
+        }
       })
       .catch((error) =>
         console.log(
@@ -109,6 +117,12 @@ function Publish() {
     getCities()
       .then((response) => {
         setCities(response.data);
+        if (response.data.length > 0) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            cityId: response.data[0].id,
+          }));
+        }
       })
       .catch((error) =>
         console.log(
@@ -128,13 +142,26 @@ function Publish() {
   }, []);
 
   function onBrandChange(event) {
-    populateModelDropdown(event.target.value);
+    const brandId = event.target.value;
+    setForm((prevForm) => ({
+      ...prevForm,
+      brandId,
+      modelId: "",
+    }));
+
+    populateModelDropdown(brandId);
   }
 
   function populateModelDropdown(brandId) {
     getModels(brandId)
       .then((response) => {
         setModels(response.data);
+        if (response.data.length > 0) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            modelId: response.data[0].id,
+          }));
+        }
       })
       .catch((error) =>
         console.log(
@@ -144,13 +171,16 @@ function Publish() {
   }
 
   const handleChange = (event) => {
-    if (event.target.id === 'brandId') {
+    if (event.target.id === "brandId") {
       onBrandChange(event);
     }
 
     setForm({
       ...form,
-      [event.target.id]: (event.target.type === 'number') ? parseInt(event.target.value) || "" : event.target.value
+      [event.target.id]:
+        event.target.type === "number"
+          ? parseInt(event.target.value) || ""
+          : event.target.value,
     });
   };
 
@@ -161,13 +191,18 @@ function Publish() {
 
     if (Object.keys(errors).length === 0) {
       publishDeal(form)
-          .then((response) => {
-          })
-          .catch((error) =>
-              console.log(
-                  `Something went wrong, please send this to an administrator: "${error.message}"`
-              )
-          );
+        .then((response) => {
+          setShowPopup(true);
+          window.setTimeout(() => {
+            setShowPopup(false);
+            window.location.href = "/my-deals";
+          }, 3000);
+        })
+        .catch((error) =>
+          console.log(
+            `Something went wrong, please send this to an administrator: "${error.message}"`
+          )
+        );
     }
   };
 
@@ -198,7 +233,9 @@ function Publish() {
                   <select
                     onChange={handleChange}
                     value={form.brandId}
-                    className={`form-select ${formErrors.brandId ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrors.brandId ? "is-invalid" : ""
+                    }`}
                     id="brandId"
                     required=""
                   >
@@ -211,7 +248,7 @@ function Publish() {
                     })}
                   </select>
                   {formErrors.brandId && (
-                      <div className="invalid-feedback">{formErrors.brandId}</div>
+                    <div className="invalid-feedback">{formErrors.brandId}</div>
                   )}
                 </div>
 
@@ -222,7 +259,9 @@ function Publish() {
                   <select
                     onChange={handleChange}
                     value={form.modelId}
-                    className={`form-select ${formErrors.modelId ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrors.modelId ? "is-invalid" : ""
+                    }`}
                     id="modelId"
                     required=""
                   >
@@ -235,7 +274,7 @@ function Publish() {
                     })}
                   </select>
                   {formErrors.modelId && (
-                      <div className="invalid-feedback">{formErrors.modelId}</div>
+                    <div className="invalid-feedback">{formErrors.modelId}</div>
                   )}
                 </div>
 
@@ -261,7 +300,9 @@ function Publish() {
                   <select
                     onChange={handleChange}
                     value={form.coupeType}
-                    className={`form-select ${formErrors.coupeType ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrors.coupeType ? "is-invalid" : ""
+                    }`}
                     id="coupeType"
                     required=""
                   >
@@ -273,9 +314,11 @@ function Publish() {
                       );
                     })}
                   </select>
-                    {formErrors.coupeType && (
-                        <div className="invalid-feedback">{formErrors.coupeType}</div>
-                    )}
+                  {formErrors.coupeType && (
+                    <div className="invalid-feedback">
+                      {formErrors.coupeType}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-sm-6">
@@ -285,7 +328,9 @@ function Publish() {
                   <select
                     onChange={handleChange}
                     value={form.cityId}
-                    className={`form-select ${formErrors.cityId ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrors.cityId ? "is-invalid" : ""
+                    }`}
                     id="cityId"
                     required=""
                   >
@@ -298,7 +343,7 @@ function Publish() {
                     })}
                   </select>
                   {formErrors.cityId && (
-                      <div className="invalid-feedback">{formErrors.cityId}</div>
+                    <div className="invalid-feedback">{formErrors.cityId}</div>
                   )}
                 </div>
 
@@ -311,11 +356,13 @@ function Publish() {
                       onChange={handleChange}
                       value={form.price}
                       type="number"
-                      className={`form-control ${formErrors.price ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        formErrors.price ? "is-invalid" : ""
+                      }`}
                       id="price"
                     />
                     {formErrors.price && (
-                        <div className="invalid-feedback">{formErrors.price}</div>
+                      <div className="invalid-feedback">{formErrors.price}</div>
                     )}
                   </div>
                 </div>
@@ -416,10 +463,7 @@ function Publish() {
                           type="radio"
                           className="form-check-input"
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="fuelType"
-                        >
+                        <label className="form-check-label" htmlFor="fuelType">
                           {fuelType.value}
                         </label>
                       </div>
@@ -440,12 +484,16 @@ function Publish() {
                       onChange={handleChange}
                       value={form.horsePower}
                       type="number"
-                      className={`form-control ${formErrors.horsePower ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        formErrors.horsePower ? "is-invalid" : ""
+                      }`}
                       id="horsePower"
                     />
-                      {formErrors.horsePower && (
-                          <div className="invalid-feedback">{formErrors.horsePower}</div>
-                      )}
+                    {formErrors.horsePower && (
+                      <div className="invalid-feedback">
+                        {formErrors.horsePower}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="col-sm-4">
@@ -457,12 +505,16 @@ function Publish() {
                       onChange={handleChange}
                       value={form.mileage}
                       type="number"
-                      className={`form-control ${formErrors.mileage ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        formErrors.mileage ? "is-invalid" : ""
+                      }`}
                       id="mileage"
                     />
-                      {formErrors.mileage && (
-                          <div className="invalid-feedback">{formErrors.mileage}</div>
-                      )}
+                    {formErrors.mileage && (
+                      <div className="invalid-feedback">
+                        {formErrors.mileage}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="col-sm-4">
@@ -476,12 +528,14 @@ function Publish() {
                       min="1886"
                       max={new Date().getFullYear() + 1}
                       type="number"
-                      className={`form-control ${formErrors.year ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        formErrors.year ? "is-invalid" : ""
+                      }`}
                       id="year"
                     />
-                      {formErrors.year && (
-                          <div className="invalid-feedback">{formErrors.year}</div>
-                      )}
+                    {formErrors.year && (
+                      <div className="invalid-feedback">{formErrors.year}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -579,13 +633,17 @@ function Publish() {
                     <textarea
                       onChange={handleChange}
                       value={form.description}
-                      className={`form-control ${formErrors.description ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        formErrors.description ? "is-invalid" : ""
+                      }`}
                       id="description"
                       rows="6"
                     />
-                      {formErrors.description && (
-                          <div className="invalid-feedback">{formErrors.description}</div>
-                      )}
+                    {formErrors.description && (
+                      <div className="invalid-feedback">
+                        {formErrors.description}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
