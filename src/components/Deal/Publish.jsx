@@ -11,6 +11,7 @@ import transmissionTypes from "../../static_data/transmission_types.json";
 import wheelTypes from "../../static_data/wheel_types.json";
 import coupeTypes from "../../static_data/coupe_types.json";
 import { useEffect, useState } from "react";
+import Popup from "../Popup.jsx";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
@@ -217,6 +218,12 @@ function Publish() {
   return (
     <div className="container">
       <main className="mb-5">
+        <Popup
+          show={showPopup}
+          onClose={() => setShowPopup(false)}
+          message={"Вашата обява беше публикувана успешно!"}
+          title={"Нова обява"}
+        />
         <div className="pb-4 text-center">
           <h2>Нова обява</h2>
         </div>
