@@ -34,6 +34,14 @@ const getFeatures = async () => {
   });
 };
 
+const getDeals = async () => {
+  return axios.get(`${entrypoint}/deals`, {
+    headers: {
+      Accept: "application/json",
+    },
+  });
+};
+
 const publishDeal = async (data) => {
   console.log(data);
   await axios.post(`${entrypoint}/deals`, {
@@ -41,4 +49,4 @@ const publishDeal = async (data) => {
   });
 };
 
-export { getBrands, getCities, getModels, getFeatures, publishDeal };
+export { getBrands, getCities, getModels, getFeatures, getDeals, publishDeal };

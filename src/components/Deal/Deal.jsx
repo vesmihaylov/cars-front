@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { formatCreatedAtDate, formatFuelType } from "../../util/helpers.js";
 
 function Deal({ deal }) {
   return (
@@ -6,7 +7,7 @@ function Deal({ deal }) {
       <div className="card mb-2" style={{ width: "18rem" }}>
         <div>
           <img
-            src={deal.thumbnailPath}
+            src="https://picsum.photos/id/237/180/100"
             className="card-img-top"
             alt={deal.name}
           />
@@ -17,12 +18,12 @@ function Deal({ deal }) {
         <div className="card-body">
           <h5 className="card-title">{deal.name}</h5>
           <h6 className="card-subtitle mb-2 text-muted">
-            {deal.year}, {deal.fuelType}, {deal.mileage} км.
+            {formatFuelType(deal.fuelType)}, {deal.mileage} км.
           </h6>
-          <h6 className="card-subtitle mt-2 text-muted">{deal.city}</h6>
+          <h6 className="card-subtitle mt-2 text-muted">{deal.city.name}</h6>
         </div>
         <div className="card-footer text-muted small text-center">
-          Публикувана на {deal.dateAdded}
+          {formatCreatedAtDate(deal.createdAt)}
           <Link className="btn btn-dark mt-2" to={`/deals/${deal.id}`}>
             Виж повече
           </Link>
