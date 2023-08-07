@@ -9,14 +9,14 @@ function Deal({ deal }) {
           <img
             src="https://picsum.photos/id/237/180/100"
             className="card-img-top"
-            alt={deal.name}
+            alt={deal.title}
           />
           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {deal.price} лв.
           </span>
         </div>
         <div className="card-body">
-          <h5 className="card-title">{deal.name}</h5>
+          <h5 className="card-title">{deal.title}</h5>
           <h6 className="card-subtitle mb-2 text-muted">
             {formatFuelType(deal.fuelType)}, {deal.mileage} км.
           </h6>
