@@ -1,4 +1,11 @@
 import { Link } from "react-router-dom";
+import {
+  CarFrontFill,
+  GearFill,
+  HeartFill,
+  HouseFill,
+  Newspaper,
+} from "react-bootstrap-icons";
 
 function Navigation() {
   return (
@@ -21,43 +28,42 @@ function Navigation() {
           id="navbar"
         >
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to={`/`}>
-                Начало
+            <li className="nav-item me-2">
+              <Link className="nav-link d-flex align-items-center" to={`/`}>
+                <HouseFill className="me-1" /> Начало
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to={`/deals/favourite`}>
-                Любими
-              </Link>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="dropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+            <li className="nav-item me-2">
+              <Link
+                className="nav-link d-flex align-items-center"
+                to={`/deals/publish`}
               >
-                Профил
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="dropdown">
-                <li>
-                  <Link className="nav-link" to={`/deals/publish`}>
-                    Публикувай Обява
-                  </Link>
-                </li>
-                <li>
-                  <Link className="nav-link" to={`/my-deals`}>
-                    Моите Обяви
-                  </Link>
-                </li>
-                <li>
-                  <Link className="nav-link" to={`/settings`}>
-                    Настройки
-                  </Link>
-                </li>
-              </ul>
+                <Newspaper className="me-1" /> Публикувай
+              </Link>
+            </li>
+            <li className="nav-item me-2">
+              <Link
+                className="nav-link d-flex align-items-center"
+                to={`/my-deals`}
+              >
+                <CarFrontFill className="me-1" /> Моите Обяви
+              </Link>
+            </li>
+            <li className="nav-item me-2">
+              <Link
+                className="nav-link d-flex align-items-center"
+                to={`/deals/favourite`}
+              >
+                <HeartFill className="me-1" /> Любими
+              </Link>
+            </li>
+            <li className="nav-item me-2">
+              <Link
+                className="nav-link d-flex align-items-center"
+                to={`/settings`}
+              >
+                <GearFill className="me-1" /> Настройки
+              </Link>
             </li>
           </ul>
         </div>
