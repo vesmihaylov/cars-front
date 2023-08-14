@@ -56,6 +56,12 @@ const publishDeal = async (data) => {
   });
 };
 
+const register = async (data) => {
+  await axios.post(`${entrypoint}/register`, {
+    data,
+  });
+};
+
 export {
   getBrands,
   getCities,
@@ -64,4 +70,5 @@ export {
   getDeals,
   getDeal,
   publishDeal,
+  register,
 };

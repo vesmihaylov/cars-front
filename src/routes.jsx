@@ -5,6 +5,7 @@ import FavouriteDeals from "./components/Profile/FavouriteDeals.jsx";
 import Error from "./components/Error.jsx";
 import List from "./components/Deal/List.jsx";
 import Settings from "./components/Profile/Settings.jsx";
+import Register from "./components/Profile/Register.jsx";
 import ChangePassword from "./components/Profile/ChangePassword.jsx";
 import MyDeals from "./components/Profile/MyDeals.jsx";
 import Publish from "./components/Deal/Publish.jsx";
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/deals/publish",
         element: <Publish />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

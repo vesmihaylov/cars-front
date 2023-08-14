@@ -5,6 +5,7 @@ import {
   HeartFill,
   HouseFill,
   Newspaper,
+  PersonCheckFill,
 } from "react-bootstrap-icons";
 
 function Navigation() {
@@ -47,6 +48,14 @@ function Navigation() {
                 to={`/my-deals`}
               >
                 <CarFrontFill className="me-1" /> Моите Обяви
+              </Link>
+            </li>
+            <li className="nav-item me-2">
+              <Link
+                className="nav-link d-flex align-items-center"
+                to={`/register`}
+              >
+                <PersonCheckFill className="me-1" /> Регистрация
               </Link>
             </li>
             <li className="nav-item me-2">
