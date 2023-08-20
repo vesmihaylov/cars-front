@@ -62,6 +62,17 @@ const register = async (data) => {
   });
 };
 
+const login = async (data) => {
+  return await axios.post(`${entrypoint}/auth`, data);
+};
+
+const logout = () => {
+  localStorage.removeItem("JWT_TOKEN");
+  window.setTimeout(() => {
+    window.location.href = "/";
+  }, 500);
+};
+
 export {
   getBrands,
   getCities,
@@ -71,4 +82,6 @@ export {
   getDeal,
   publishDeal,
   register,
+  login,
+  logout,
 };
