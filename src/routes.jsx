@@ -13,8 +13,6 @@ import Publish from "./components/Deal/Publish.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function RouterConfig() {
-  const isAuthenticated = localStorage.getItem("JWT_TOKEN") !== null;
-
   return (
     <Routes>
       <Route path="/" element={<App />}>
@@ -23,7 +21,7 @@ function RouterConfig() {
         <Route
           path="deals/favourite"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <FavouriteDeals />
             </ProtectedRoute>
           }
@@ -31,7 +29,7 @@ function RouterConfig() {
         <Route
           path="settings"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <Settings />
             </ProtectedRoute>
           }
@@ -39,7 +37,7 @@ function RouterConfig() {
         <Route
           path="change-password"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <ChangePassword />
             </ProtectedRoute>
           }
@@ -47,7 +45,7 @@ function RouterConfig() {
         <Route
           path="my-deals"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <MyDeals />
             </ProtectedRoute>
           }
@@ -55,7 +53,7 @@ function RouterConfig() {
         <Route
           path="deals/publish"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <Publish />
             </ProtectedRoute>
           }
