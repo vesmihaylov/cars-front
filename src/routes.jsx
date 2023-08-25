@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import App from "./App.jsx";
 import View from "./components/Deal/View.jsx";
 import FavouriteDeals from "./components/Profile/FavouriteDeals.jsx";
@@ -10,51 +10,62 @@ import Login from "./components/Profile/Login.jsx";
 import ChangePassword from "./components/Profile/ChangePassword.jsx";
 import MyDeals from "./components/Profile/MyDeals.jsx";
 import Publish from "./components/Deal/Publish.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <Error />,
-    children: [
-      {
-        path: "/",
-        element: <List />,
-      },
-      {
-        path: "/deals/:id",
-        element: <View />,
-      },
-      {
-        path: "/deals/favourite",
-        element: <FavouriteDeals />,
-      },
-      {
-        path: "/settings",
-        element: <Settings />,
-      },
-      {
-        path: "/change-password",
-        element: <ChangePassword />,
-      },
-      {
-        path: "/my-deals",
-        element: <MyDeals />,
-      },
-      {
-        path: "/deals/publish",
-        element: <Publish />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-    ],
-  },
-]);
+function RouterConfig() {
+  const isAuthenticated = localStorage.getItem("JWT_TOKEN") !== null;
 
-export { router };
+  return (
+    <Routes>
+      <Route path="/" element={<App />}>
+        <Route index element={<List />} />
+        <Route path="deals/:id" element={<View />} />
+        <Route
+          path="deals/favourite"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <FavouriteDeals />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="change-password"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="my-deals"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <MyDeals />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="deals/publish"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Publish />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+      </Route>
+      <Route path="*" element={<Error />} />
+    </Routes>
+  );
+}
+
+export { RouterConfig };
