@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../../api.js";
 import Popup from "../Popup.jsx";
 
 function Login() {
   const [formErrors, setFormErrors] = useState({});
   const [showPopup, setShowPopup] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("JWT_TOKEN");
+    if (token) {
+      window.location.href = "/";
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
 
   const validateForm = () => {
     const errors = {};
@@ -37,7 +47,7 @@ function Login() {
           window.setTimeout(() => {
             setShowPopup(false);
             window.location.href = "/";
-          }, 3000);
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.status === 401) {
@@ -59,6 +69,10 @@ function Login() {
       [event.target.id]: event.target.value,
     });
   };
+
+  if (isAuthenticated === null) {
+    return null;
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center">

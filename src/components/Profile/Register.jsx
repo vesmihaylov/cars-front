@@ -181,7 +181,6 @@ function Register() {
             <label htmlFor="phoneNumber" className="form-label">
               Телефонен номер
             </label>
-            9
             <input
               type="tel"
               className={`form-control ${
