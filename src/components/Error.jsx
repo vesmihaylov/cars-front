@@ -9,9 +9,8 @@ function Error() {
           404 <CarFrontFill />
         </h1>
         <p className="fs-3">
-          <span className="text-danger">Опа!</span> Страницата не беше намерена.
+          <span className="text-danger">Страницата, която търсите не беше намерена.</span>
         </p>
-        <p className="lead">Това, което търсите не беше намерено.</p>
         <Link className="btn btn-dark" to={`/`}>
           Начало
         </Link>
