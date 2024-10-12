@@ -1,4 +1,6 @@
 import Navigation from "./Navigation.jsx";
+import Button from '@mui/material/Button';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 function ChangePassword() {
   return (
@@ -44,9 +46,7 @@ function ChangePassword() {
       </div>
 
       <div className="text-right mt-3">
-        <button type="button" className="btn btn-primary">
-          Запази промени
-        </button>
+        <Button startIcon={<CheckCircleOutlineIcon />} color="primary" variant="contained">Запази промени</Button>
       </div>
     </div>
   );
