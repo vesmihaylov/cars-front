@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { register } from "../../api.js";
 import Popup from "../Popup.jsx";
+import Button from "../Element/Button.jsx";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 function Register() {
   const [formErrors, setFormErrors] = useState({});
@@ -195,9 +197,12 @@ function Register() {
             )}
           </div>
           <div className="d-grid justify-content-center mt-3">
-            <button type="submit" className="btn btn-dark">
-              Създай нов профил
-            </button>
+            <Button
+              startIcon={<HowToRegIcon />}
+              text={"Създай нов профил"}
+              type="submit"
+              color="error"
+            />
           </div>
         </form>
       </div>

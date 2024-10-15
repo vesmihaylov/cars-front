@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { login } from "../../api.js";
 import Popup from "../Popup.jsx";
+import Button from "../Element/Button.jsx";
+import LoginIcon from "@mui/icons-material/Login";
 
 function Login() {
   const [formErrors, setFormErrors] = useState({});
@@ -125,9 +127,12 @@ function Login() {
             )}
           </div>
           <div className="d-grid justify-content-center mt-3">
-            <button type="submit" className="btn btn-dark">
-              Влез
-            </button>
+            <Button
+              startIcon={<LoginIcon />}
+              text={"Влез"}
+              type="submit"
+              color="error"
+            />
           </div>
         </form>
       </div>

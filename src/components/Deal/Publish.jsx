@@ -12,6 +12,8 @@ import wheelTypes from "../../static_data/wheel_types.json";
 import coupeTypes from "../../static_data/coupe_types.json";
 import { useEffect, useState } from "react";
 import Popup from "../Popup.jsx";
+import Button from "../Element/Button.jsx";
+import PublishIcon from "@mui/icons-material/Publish";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
@@ -657,9 +659,13 @@ function Publish() {
 
               <hr className="my-4" />
 
-              <button className="w-100 btn btn-success btn-lg" type="submit">
-                Публикувай
-              </button>
+              <Button
+                startIcon={<PublishIcon />}
+                color="success"
+                text={"Публикувай обява"}
+                type="submit"
+                size="large"
+              />
             </form>
           </div>
         </div>
