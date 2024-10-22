@@ -1,5 +1,6 @@
 import Navigation from "./Navigation.jsx";
 import Button from "../Element/Button.jsx";
+import TextField from "../Element/TextField.jsx";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function Settings() {
@@ -14,20 +15,18 @@ function Settings() {
             <div className="tab-content">
               <div className="tab-pane fade active show" id="account-general">
                 <div className="card-body">
-                  <div className="form-group mb-2 mt-2">
-                    <label>Потребителско име</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder="Въведете потребителско име..."
+                  <div className="form-group mb-2 mt-4">
+                    <TextField
+                      label={"Потребителско име"}
+                      type={"text"}
+                      placeholder={"SunshineAutos"}
                     />
                   </div>
-                  <div className="form-group mb-2 mt-2">
-                    <label>Електронна поща</label>
-                    <input
-                      className="form-control"
-                      type="email"
-                      placeholder="Въведете електронна поща..."
+                  <div className="form-group mb-2 mt-4">
+                    <TextField
+                      label={"Електронна поща"}
+                      type={"email"}
+                      placeholder={"sunshineautos@email.rnd"}
                     />
                   </div>
                 </div>

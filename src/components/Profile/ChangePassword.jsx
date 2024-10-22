@@ -1,5 +1,6 @@
 import Navigation from "./Navigation.jsx";
 import Button from "../Element/Button.jsx";
+import TextField from "../Element/TextField.jsx";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function ChangePassword() {
@@ -14,28 +15,24 @@ function ChangePassword() {
             <div className="tab-content">
               <div className="tab-pane fade active show" id="account-general">
                 <div className="card-body">
-                  <div className="form-group mb-2 mt-2">
-                    <label>Текуща парола</label>
-                    <input
-                      className="form-control"
-                      type="password"
-                      placeholder="Въведете текущата парола..."
+                  <div className="form-group mb-2 mt-4">
+                    <TextField
+                      label={"Текуща парола"}
+                      type={"password"}
+                      placeholder={"Въведете текущата парола..."}
                     />
                   </div>
-                  <div className="form-group mb-2 mt-2">
-                    <label>Нова парола</label>
-                    <input
-                      className="form-control"
-                      type="password"
-                      placeholder="Въведете новата парола..."
+                  <div className="form-group mb-2 mt-4">
+                    <TextField
+                      label={"Нова парола"}
+                      type={"password"}
+                      placeholder={"Въведете новата парола..."}
                     />
                   </div>
-                  <div className="form-group mb-2 mt-2">
-                    <label>Повторете нова парола</label>
-                    <input
-                      className="form-control"
-                      type="password"
-                      placeholder="Повторете нова парола..."
+                  <div className="form-group mb-2 mt-4">
+                    <TextField
+                      label={"Повторете нова парола"}
+                      type={"password"}
                     />
                   </div>
                 </div>
