@@ -9,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
+import Grid from "@mui/material/Grid2";
+import Box from "@mui/material/Box";
 
 function MyDeals() {
   let myDeals = deals
@@ -16,15 +18,16 @@ function MyDeals() {
     .map((filteredDeal) => <Deal key={filteredDeal.id} deal={filteredDeal} />);
 
   return (
-    <div className="container mb-5">
+    <Box className="container mb-5">
       <h4 className="font-weight-bold py-3 mb-4">Моите обяви</h4>
-
-      <div className="card overflow-hidden">
-        <div className="row">
-          <Navigation />
-          <div className="col-9">
+      <Box className="card overflow-hidden">
+        <Grid container spacing={2}>
+          <Grid xs={12} sm={3}>
+            <Navigation />
+          </Grid>
+          <Grid xs={12} sm={9} size={"grow"}>
             <TableContainer component={Paper}>
-              <Table aria-label="collapsible table">
+              <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell />
@@ -45,10 +48,10 @@ function MyDeals() {
                 <TableBody>{myDeals}</TableBody>
               </Table>
             </TableContainer>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 }
 

@@ -1,35 +1,51 @@
-import { Link } from "react-router-dom";
+import { Tabs, Tab, Box } from "@mui/material";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Navigation() {
+  const location = useLocation();
+  const [value, setValue] = useState(location.pathname);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <div className="col-md-3 pt-0">
-      <div className="list-group list-group-flush account-settings-links">
-        <a
-          className="list-group-item list-group-item-action"
-          data-toggle="list"
-        >
-          <Link className="nav-link" to={`/settings`}>
-            Настройки
-          </Link>
-        </a>
-        <a
-          className="list-group-item list-group-item-action"
-          data-toggle="list"
-        >
-          <Link className="nav-link" to={`/change-password`}>
-            Смяна на парола
-          </Link>
-        </a>
-        <a
-          className="list-group-item list-group-item-action"
-          data-toggle="list"
-        >
-          <Link className="nav-link" to={`/my-deals`}>
-            Моите обяви
-          </Link>
-        </a>
-      </div>
-    </div>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: "100%",
+      }}
+    >
+      <Tabs
+        orientation="vertical"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs"
+        sx={{ borderRight: 1, borderColor: "divider" }}
+      >
+        <Tab
+          label="Настройки"
+          value="/settings"
+          component={Link}
+          to="/settings"
+        />
+        <Tab
+          label="Смяна на парола"
+          value="/change-password"
+          component={Link}
+          to="/change-password"
+        />
+        <Tab
+          label="Моите обяви"
+          value="/my-deals"
+          component={Link}
+          to="/my-deals"
+        />
+      </Tabs>
+    </Box>
   );
 }
 

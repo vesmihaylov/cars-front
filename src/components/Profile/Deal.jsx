@@ -18,7 +18,7 @@ function Deal({ deal }) {
   const [open, setOpen] = React.useState(false);
   return (
     <React.Fragment>
-      <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -52,7 +52,7 @@ function Deal({ deal }) {
           </Fab>
         </TableCell>
       </TableRow>
-      <TableRow hover>
+      <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 3 }}>
