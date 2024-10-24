@@ -25,8 +25,11 @@ function MyDeals() {
           <Grid xs={12} sm={3}>
             <Navigation />
           </Grid>
-          <Grid xs={12} sm={9} size={"grow"}>
-            <TableContainer component={Paper}>
+          <Grid xs={12} sm={9} size="grow">
+            <TableContainer
+              component={Paper}
+              sx={{ boxShadow: "none", border: "none" }}
+            >
               <Table>
                 <TableHead>
                   <TableRow>
