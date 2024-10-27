@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import Popup from "../Popup.jsx";
 import Button from "../Element/Button.jsx";
 import PublishIcon from "@mui/icons-material/Publish";
+import TextField from "../Element/TextField.jsx";
+import Dropdown from "../Element/Dropdown.jsx";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
@@ -144,8 +146,7 @@ function Publish() {
       );
   }, []);
 
-  function onBrandChange(event) {
-    const brandId = event.target.value;
+  function onBrandChange(brandId) {
     setForm((prevForm) => ({
       ...prevForm,
       brandId,
@@ -173,18 +174,51 @@ function Publish() {
       );
   }
 
-  const handleChange = (event) => {
-    if (event.target.id === "brandId") {
-      onBrandChange(event);
+  const handleChange = (event, newValue = null, fieldType) => {
+    switch (fieldType) {
+      case "brandId":
+        if (newValue) {
+          onBrandChange(newValue.id);
+          setForm((prevForm) => ({
+            ...prevForm,
+            brandId: newValue.id,
+            modelId: "",
+          }));
+        }
+        break;
+      case "modelId":
+        if (newValue) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            modelId: newValue.id,
+          }));
+        }
+        break;
+      case "coupeType":
+        if (newValue) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            coupeType: newValue.id,
+          }));
+        }
+        break;
+      case "cityId":
+        if (newValue) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            cityId: newValue.id,
+          }));
+        }
+        break;
+      default:
+        setForm((prevForm) => ({
+          ...prevForm,
+          [event.target.id]:
+            event.target.type === "number"
+              ? parseInt(event.target.value) || ""
+              : event.target.value,
+        }));
     }
-
-    setForm({
-      ...form,
-      [event.target.id]:
-        event.target.type === "number"
-          ? parseInt(event.target.value) || ""
-          : event.target.value,
-    });
   };
 
   const handleSubmit = (e) => {
@@ -236,138 +270,109 @@ function Publish() {
             <form className="needs-validation" onSubmit={handleSubmit}>
               <div className="row g-3">
                 <div className="col-sm-6">
-                  <label htmlFor="brandId" className="form-label">
-                    Марка
-                  </label>
-                  <select
-                    onChange={handleChange}
-                    value={form.brandId}
-                    className={`form-select ${
-                      formErrors.brandId ? "is-invalid" : ""
-                    }`}
+                  <Dropdown
                     id="brandId"
-                    required=""
-                  >
-                    {brands.map((brand) => {
-                      return (
-                        <option key={brand.id} value={brand.id}>
-                          {brand.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {formErrors.brandId && (
-                    <div className="invalid-feedback">{formErrors.brandId}</div>
-                  )}
+                    label="Марка"
+                    options={brands}
+                    getOptionLabel={(option) => option.name || ""}
+                    value={
+                      brands.find((brand) => brand.id === form.brandId) || null
+                    }
+                    onChange={(event, newValue) =>
+                      handleChange(event, newValue, "brandId")
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        error={!!formErrors.brandId}
+                        helperText={formErrors.brandId}
+                        required
+                      />
+                    )}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
+                  />
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="modelId" className="form-label">
-                    Модел
-                  </label>
-                  <select
-                    onChange={handleChange}
-                    value={form.modelId}
-                    className={`form-select ${
-                      formErrors.modelId ? "is-invalid" : ""
-                    }`}
+                  <Dropdown
                     id="modelId"
-                    required=""
-                  >
-                    {models.map((model) => {
-                      return (
-                        <option key={model.id} value={model.id}>
-                          {model.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {formErrors.modelId && (
-                    <div className="invalid-feedback">{formErrors.modelId}</div>
-                  )}
+                    label="Модел"
+                    options={models}
+                    value={
+                      models.find((model) => model.id === form.modelId) || null
+                    }
+                    onChange={(event, newValue) =>
+                      handleChange(event, newValue, "modelId")
+                    }
+                    error={formErrors.modelId}
+                    helperText={formErrors.modelId}
+                  />
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="additionalTitle" className="form-label">
-                    Допълнително описание (<i>...спорт пакет, фейслифт...</i>)
-                  </label>
                   <div className="input-group has-validation">
-                    <input
+                    <TextField
+                      fullWidth
+                      label={
+                        "Допълнително описание (...спорт пакет, фейслифт, нов внос...)"
+                      }
                       onChange={handleChange}
                       value={form.additionalTitle}
                       type="text"
-                      className="form-control"
                       id="additionalTitle"
                     />
                   </div>
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="coupeType" className="form-label">
-                    Вид Купе
-                  </label>
-                  <select
-                    onChange={handleChange}
-                    value={form.coupeType}
-                    className={`form-select ${
-                      formErrors.coupeType ? "is-invalid" : ""
-                    }`}
+                  <Dropdown
                     id="coupeType"
-                    required=""
-                  >
-                    {Object.entries(coupeTypes).map(([key, coupeType]) => {
-                      return (
-                        <option key={key} value={coupeType.key}>
-                          {coupeType.value}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {formErrors.coupeType && (
-                    <div className="invalid-feedback">
-                      {formErrors.coupeType}
-                    </div>
-                  )}
+                    label="Вид Купе"
+                    options={coupeTypes}
+                    value={
+                      coupeTypes.find((type) => type.id === form.coupeType) ||
+                      null
+                    }
+                    onChange={(event, newValue) =>
+                      handleChange(event, newValue, "coupeType")
+                    }
+                    error={formErrors.coupeType}
+                    helperText={formErrors.coupeType}
+                    getOptionLabel={(option) => option.value || ""}
+                  />
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="cityId" className="form-label">
-                    Град
-                  </label>
-                  <select
-                    onChange={handleChange}
-                    value={form.cityId}
-                    className={`form-select ${
-                      formErrors.cityId ? "is-invalid" : ""
-                    }`}
+                  <Dropdown
                     id="cityId"
-                    required=""
-                  >
-                    {cities.map((city) => {
-                      return (
-                        <option key={city.id} value={city.id}>
-                          {city.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {formErrors.cityId && (
-                    <div className="invalid-feedback">{formErrors.cityId}</div>
-                  )}
+                    label="Град"
+                    options={cities}
+                    value={
+                      cities.find((city) => city.id === form.cityId) || null
+                    }
+                    onChange={(event, newValue) =>
+                      handleChange(event, newValue, "cityId")
+                    }
+                    error={formErrors.cityId}
+                    helperText={formErrors.cityId}
+                  />
                 </div>
 
                 <div className="col-sm-6">
-                  <label htmlFor="price" className="form-label">
-                    Цена
-                  </label>
                   <div className="input-group has-validation">
-                    <input
+                    <TextField
+                      error={formErrors.price}
+                      helperText={
+                        formErrors.price ? "Моля, въведете цена." : null
+                      }
+                      fullWidth
+                      label={"Цена"}
                       onChange={handleChange}
                       value={form.price}
                       type="number"
-                      className={`form-control ${
-                        formErrors.price ? "is-invalid" : ""
-                      }`}
                       id="price"
                     />
                     {formErrors.price && (
@@ -485,66 +490,47 @@ function Publish() {
 
               <div className="row g-4">
                 <div className="col-sm-3">
-                  <label htmlFor="horsePower" className="form-label">
-                    Мощност (к.с.)
-                  </label>
                   <div className="input-group has-validation">
-                    <input
+                    <TextField
+                      error={formErrors.horsePower}
+                      helperText={formErrors.horsePower}
+                      fullWidth
+                      label={"Мощност (к.с.)"}
                       onChange={handleChange}
                       value={form.horsePower}
                       type="number"
-                      className={`form-control ${
-                        formErrors.horsePower ? "is-invalid" : ""
-                      }`}
                       id="horsePower"
                     />
-                    {formErrors.horsePower && (
-                      <div className="invalid-feedback">
-                        {formErrors.horsePower}
-                      </div>
-                    )}
                   </div>
                 </div>
                 <div className="col-sm-4">
-                  <label htmlFor="mileage" className="form-label">
-                    Пробег (км.)
-                  </label>
                   <div className="input-group has-validation">
-                    <input
+                    <TextField
+                      error={formErrors.mileage}
+                      helperText={formErrors.mileage}
+                      fullWidth
+                      label={"Пробег (км.)"}
                       onChange={handleChange}
                       value={form.mileage}
                       type="number"
-                      className={`form-control ${
-                        formErrors.mileage ? "is-invalid" : ""
-                      }`}
                       id="mileage"
                     />
-                    {formErrors.mileage && (
-                      <div className="invalid-feedback">
-                        {formErrors.mileage}
-                      </div>
-                    )}
                   </div>
                 </div>
                 <div className="col-sm-4">
-                  <label htmlFor="year" className="form-label">
-                    Година на производство
-                  </label>
                   <div className="input-group has-validation">
-                    <input
-                      onChange={handleChange}
-                      value={form.year}
+                    <TextField
+                      error={formErrors.year}
+                      helperText={formErrors.year}
                       min="1886"
                       max={new Date().getFullYear() + 1}
+                      fullWidth
+                      label={"Година на производство"}
+                      onChange={handleChange}
+                      value={form.year}
                       type="number"
-                      className={`form-control ${
-                        formErrors.year ? "is-invalid" : ""
-                      }`}
                       id="year"
                     />
-                    {formErrors.year && (
-                      <div className="invalid-feedback">{formErrors.year}</div>
-                    )}
                   </div>
                 </div>
               </div>

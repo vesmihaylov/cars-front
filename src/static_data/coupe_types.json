@@ -1,47 +1,38 @@
 [
   {
-    "key": "SEDAN",
-    "value": "Седан",
-    "id": "sedan"
+    "id": "SEDAN",
+    "value": "Седан"
   },
   {
-    "key": "HATCHBACK",
-    "value": "Хечбек",
-    "id": "hatchback"
+    "id": "HATCHBACK",
+    "value": "Хечбек"
   },
   {
-    "key": "WAGON",
-    "value": "Комби",
-    "id": "wagon"
+    "id": "WAGON",
+    "value": "Комби"
   },
   {
-    "key": "COUPE",
-    "value": "Купе",
-    "id": "coupe"
+    "id": "COUPE",
+    "value": "Купе"
   },
   {
-    "key": "CONVERTIBLE",
-    "value": "Кабриолет",
-    "id": "convertible"
+    "id": "CONVERTIBLE",
+    "value": "Кабриолет"
   },
   {
-    "key": "SUV",
-    "value": "Джип",
-    "id": "suv"
+    "id": "SUV",
+    "value": "Джип"
   },
   {
-    "key": "PICKUP",
-    "value": "Пикап",
-    "id": "pickup"
+    "id": "PICKUP",
+    "value": "Пикап"
   },
   {
-    "key": "VAN",
-    "value": "Ван",
-    "id": "van"
+    "id": "VAN",
+    "value": "Ван"
   },
   {
-    "key": "HEARSE",
-    "value": "Катафалка",
-    "id": "hearse"
+    "id": "HEARSE",
+    "value": "Катафалка"
   }
 ]
