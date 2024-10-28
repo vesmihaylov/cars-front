@@ -1,32 +1,26 @@
 [
   {
-    "key": "PETROL",
-    "value": "Бензин",
-    "id": "petrol"
+    "id": "PETROL",
+    "value": "Бензин"
   },
   {
-    "key": "DIESEL",
-    "value": "Дизел",
-    "id": "diesel"
+    "id": "DIESEL",
+    "value": "Дизел"
   },
   {
-    "key": "GAS_AND_PETROL",
-    "value": "Газ/Бензин",
-    "id": "gas_and_petrol"
+    "id": "GAS_AND_PETROL",
+    "value": "Газ/Бензин"
   },
   {
-    "key": "METHANE_AND_PETROL",
-    "value": "Метан/Бензин",
-    "id": "methane_and_petrol"
+    "id": "METHANE_AND_PETROL",
+    "value": "Метан/Бензин"
   },
   {
-    "key": "HYBRID",
-    "value": "Хибрид",
-    "id": "hybrid"
+    "id": "HYBRID",
+    "value": "Хибрид"
   },
   {
-    "key": "ELECTRIC",
-    "value": "Електричество",
-    "id": "electric"
+    "id": "ELECTRIC",
+    "value": "Електричество"
   }
 ]

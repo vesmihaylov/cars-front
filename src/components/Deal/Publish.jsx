@@ -16,6 +16,7 @@ import Button from "../Element/Button.jsx";
 import PublishIcon from "@mui/icons-material/Publish";
 import TextField from "../Element/TextField.jsx";
 import Dropdown from "../Element/Dropdown.jsx";
+import RadioGroup from "../Element/RadioGroup.jsx";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
@@ -175,7 +176,17 @@ function Publish() {
   }
 
   const handleChange = (event, newValue = null, fieldType) => {
+    const value = event.target.value;
     switch (fieldType) {
+      case "conditionType":
+      case "wheelType":
+      case "transmissionType":
+      case "fuelType":
+        setForm((prevForm) => ({
+          ...prevForm,
+          [fieldType]: value,
+        }));
+        break;
       case "brandId":
         if (newValue) {
           onBrandChange(newValue.id);
@@ -388,101 +399,40 @@ function Publish() {
 
               <div className="row g-3">
                 <div className="col-sm-3">
-                  <h5 className="mb-3">Състояние</h5>
-                  {Object.entries(conditionTypes).map(
-                    ([key, conditionType]) => {
-                      return (
-                        <div key={key} className="form-check">
-                          <input
-                            onChange={handleChange}
-                            defaultChecked={conditionType.key === "USED"}
-                            name="condition"
-                            id="conditionType"
-                            value={conditionType.key}
-                            type="radio"
-                            className="form-check-input"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor={conditionType.id}
-                          >
-                            {conditionType.value}
-                          </label>
-                        </div>
-                      );
-                    }
-                  )}
+                  <RadioGroup
+                    label="Състояние"
+                    options={conditionTypes}
+                    fieldType="conditionType"
+                    onChange={handleChange}
+                    defaultValue="USED"
+                  />
                 </div>
                 <div className="col-sm-3">
-                  <h5 className="mb-3">Разположение на волан</h5>
-                  {Object.entries(wheelTypes).map(([key, wheelType]) => {
-                    return (
-                      <div key={key} className="form-check">
-                        <input
-                          onChange={handleChange}
-                          defaultChecked={wheelType.key === "LEFT"}
-                          name="wheelType"
-                          id="wheelType"
-                          value={wheelType.key}
-                          type="radio"
-                          className="form-check-input"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={wheelType.id}
-                        >
-                          {wheelType.value}
-                        </label>
-                      </div>
-                    );
-                  })}
+                  <RadioGroup
+                    label="Разположение на волан"
+                    options={wheelTypes}
+                    fieldType="wheelType"
+                    onChange={handleChange}
+                    defaultValue="LEFT"
+                  />
                 </div>
                 <div className="col-sm-3">
-                  <h5 className="mb-3">Скорости</h5>
-                  {Object.entries(transmissionTypes).map(
-                    ([key, transmissionType]) => {
-                      return (
-                        <div key={key} className="form-check">
-                          <input
-                            onChange={handleChange}
-                            defaultChecked={transmissionType.key === "MANUAL"}
-                            name="transmissionType"
-                            id="transmissionType"
-                            value={transmissionType.key}
-                            type="radio"
-                            className="form-check-input"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor={transmissionType.id}
-                          >
-                            {transmissionType.value}
-                          </label>
-                        </div>
-                      );
-                    }
-                  )}
+                  <RadioGroup
+                    label="Скорости"
+                    options={transmissionTypes}
+                    fieldType="transmissionType"
+                    onChange={handleChange}
+                    defaultValue="MANUAL"
+                  />
                 </div>
                 <div className="col-sm-3">
-                  <h5 className="mb-3">Тип двигател</h5>
-                  {Object.entries(fuelTypes).map(([key, fuelType]) => {
-                    return (
-                      <div key={key} className="form-check">
-                        <input
-                          onChange={handleChange}
-                          defaultChecked={fuelType.key === "PETROL"}
-                          name="fuelType"
-                          id="fuelType"
-                          value={fuelType.key}
-                          type="radio"
-                          className="form-check-input"
-                        />
-                        <label className="form-check-label" htmlFor="fuelType">
-                          {fuelType.value}
-                        </label>
-                      </div>
-                    );
-                  })}
+                  <RadioGroup
+                    label="Тип двигател"
+                    options={fuelTypes}
+                    fieldType="fuelType"
+                    onChange={handleChange}
+                    defaultValue="PETROL"
+                  />
                 </div>
               </div>
 

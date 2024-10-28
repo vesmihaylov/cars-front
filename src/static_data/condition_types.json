@@ -1,27 +1,22 @@
 [
   {
-    "key": "NEW",
-    "value": "Нов",
-    "id": "new"
+    "id": "NEW",
+    "value": "Нов"
   },
   {
-    "key": "USED",
-    "value": "Употребявано",
-    "id": "used"
+    "id": "USED",
+    "value": "Употребявано"
   },
   {
-    "key": "CRASHED",
-    "value": "Ударено",
-    "id": "crashed"
+    "id": "CRASHED",
+    "value": "Ударено"
   },
   {
-    "key": "BROKEN",
-    "value": "Повредено",
-    "id": "broken"
+    "id": "BROKEN",
+    "value": "Повредено"
   },
   {
-    "key": "PARTS",
-    "value": "За части",
-    "id": "parts"
+    "id": "PARTS",
+    "value": "За части"
   }
 ]

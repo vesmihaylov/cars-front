@@ -1,12 +1,10 @@
 [
   {
-    "key": "LEFT",
-    "value": "Ляво",
-    "id": "leftWheel"
+    "id": "LEFT",
+    "value": "Ляво"
   },
   {
-    "key": "RIGHT",
-    "value": "Дясно",
-    "id": "rightWheel"
+    "id": "RIGHT",
+    "value": "Дясно"
   }
 ]
