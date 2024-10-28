@@ -17,6 +17,9 @@ import PublishIcon from "@mui/icons-material/Publish";
 import TextField from "../Element/TextField.jsx";
 import Dropdown from "../Element/Dropdown.jsx";
 import RadioGroup from "../Element/RadioGroup.jsx";
+import CheckBox from "../Element/CheckBox.jsx";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 
 function Publish() {
   const [brands, setBrands] = useState([]);
@@ -491,80 +494,68 @@ function Publish() {
               <div className="row">
                 <div className="col-sm-4">
                   <h6 className="mb-3">Сигурност</h6>
-                  {features
-                    .filter((feature) => feature.type === "SECURITY")
-                    .map((feature) => {
-                      return (
-                        <div key={feature.id} className="form-check">
-                          <input
-                            onClick={handleFeatureCheck}
-                            value={feature.id}
-                            name="securityFeatures"
-                            type="checkbox"
-                            className="form-check-input"
-                            id={feature.id}
+                  <FormGroup>
+                    {features
+                      .filter((feature) => feature.type === "SECURITY")
+                      .map((feature) => {
+                        return (
+                          <FormControlLabel
+                            key={feature.id}
+                            control={
+                              <CheckBox
+                                onChange={handleFeatureCheck}
+                                value={feature.id}
+                              />
+                            }
+                            label={feature.name}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={feature.id}
-                          >
-                            {feature.name}
-                          </label>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </FormGroup>
                 </div>
 
                 <div className="col-sm-4">
                   <h6 className="mb-3 mt-3">Комфорт</h6>
-                  {features
-                    .filter((feature) => feature.type === "COMFORT")
-                    .map((feature) => {
-                      return (
-                        <div key={feature.id} className="form-check">
-                          <input
-                            onChange={handleFeatureCheck}
-                            value={feature.id}
-                            name="comfortFeatures"
-                            type="checkbox"
-                            className="form-check-input"
-                            id={feature.id}
+                  <FormGroup>
+                    {features
+                      .filter((feature) => feature.type === "COMFORT")
+                      .map((feature) => {
+                        return (
+                          <FormControlLabel
+                            key={feature.id}
+                            control={
+                              <CheckBox
+                                onChange={handleFeatureCheck}
+                                value={feature.id}
+                              />
+                            }
+                            label={feature.name}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={feature.id}
-                          >
-                            {feature.name}
-                          </label>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </FormGroup>
                 </div>
 
                 <div className="col-sm-4">
                   <h6 className="mb-3 mt-3">Други</h6>
-                  {features
-                    .filter((feature) => feature.type === "OTHER")
-                    .map((feature) => {
-                      return (
-                        <div key={feature.id} className="form-check">
-                          <input
-                            onChange={handleFeatureCheck}
-                            value={feature.id}
-                            name="otherFeatures"
-                            type="checkbox"
-                            className="form-check-input"
-                            id={feature.id}
+                  <FormGroup>
+                    {features
+                      .filter((feature) => feature.type === "OTHER")
+                      .map((feature) => {
+                        return (
+                          <FormControlLabel
+                            key={feature.id}
+                            control={
+                              <CheckBox
+                                onChange={handleFeatureCheck}
+                                value={feature.id}
+                              />
+                            }
+                            label={feature.name}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={feature.id}
-                          >
-                            {feature.name}
-                          </label>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </FormGroup>
                 </div>
               </div>
 
